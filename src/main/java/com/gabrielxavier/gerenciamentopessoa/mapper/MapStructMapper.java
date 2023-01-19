@@ -1,11 +1,11 @@
-package com.gabrielxavier.gerenciamentopessoa.mapstruct.mappers;
+package com.gabrielxavier.gerenciamentopessoa.mapper;
 
 import com.gabrielxavier.gerenciamentopessoa.entity.Endereco;
 import com.gabrielxavier.gerenciamentopessoa.entity.Pessoa;
-import com.gabrielxavier.gerenciamentopessoa.mapstruct.dtos.EnderecoRequestDTO;
-import com.gabrielxavier.gerenciamentopessoa.mapstruct.dtos.EnderecoResponseDTO;
-import com.gabrielxavier.gerenciamentopessoa.mapstruct.dtos.PessoaRequestDTO;
-import com.gabrielxavier.gerenciamentopessoa.mapstruct.dtos.PessoaResponseDTO;
+import com.gabrielxavier.gerenciamentopessoa.dtos.EnderecoRequestDTO;
+import com.gabrielxavier.gerenciamentopessoa.dtos.EnderecoResponseDTO;
+import com.gabrielxavier.gerenciamentopessoa.dtos.PessoaRequestDTO;
+import com.gabrielxavier.gerenciamentopessoa.dtos.PessoaResponseDTO;
 import org.mapstruct.Mapper;
 
 @Mapper(componentModel = "spring")

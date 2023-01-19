@@ -1,6 +1,7 @@
-package com.gabrielxavier.gerenciamentopessoa.mapstruct.dtos;
+package com.gabrielxavier.gerenciamentopessoa.dtos;
 
 import com.gabrielxavier.gerenciamentopessoa.entity.Pessoa;
+import com.gabrielxavier.gerenciamentopessoa.entity.enums.TipoEndereco;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
@@ -24,7 +25,7 @@ public class EnderecoRequestDTO {
     @NotNull(message = "Você deve informar a cidade")
     private String cidade;
 
-    @NotNull(message = "VocÊ deve informar true caso seja o endereço princpal. Caso não, insira false")
-    private boolean enderecoPrincipal;
+    @NotNull(message = "Você deve informar se o email é o 'PRINCIPAL', ou então, o 'SECUNDARIO'")
+    private TipoEndereco tipoEndereco;
 }
 

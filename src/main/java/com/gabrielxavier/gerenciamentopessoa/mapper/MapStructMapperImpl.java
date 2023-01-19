@@ -1,11 +1,11 @@
-package com.gabrielxavier.gerenciamentopessoa.mapstruct.mappers;
+package com.gabrielxavier.gerenciamentopessoa.mapper;
 
 import com.gabrielxavier.gerenciamentopessoa.entity.Endereco;
 import com.gabrielxavier.gerenciamentopessoa.entity.Pessoa;
-import com.gabrielxavier.gerenciamentopessoa.mapstruct.dtos.EnderecoRequestDTO;
-import com.gabrielxavier.gerenciamentopessoa.mapstruct.dtos.EnderecoResponseDTO;
-import com.gabrielxavier.gerenciamentopessoa.mapstruct.dtos.PessoaRequestDTO;
-import com.gabrielxavier.gerenciamentopessoa.mapstruct.dtos.PessoaResponseDTO;
+import com.gabrielxavier.gerenciamentopessoa.dtos.EnderecoRequestDTO;
+import com.gabrielxavier.gerenciamentopessoa.dtos.EnderecoResponseDTO;
+import com.gabrielxavier.gerenciamentopessoa.dtos.PessoaRequestDTO;
+import com.gabrielxavier.gerenciamentopessoa.dtos.PessoaResponseDTO;
 import com.gabrielxavier.gerenciamentopessoa.repository.EnderecoRepository;
 import org.springframework.stereotype.Component;
 
@@ -25,7 +25,7 @@ public class MapStructMapperImpl implements MapStructMapper {
 
         Pessoa pessoa = new Pessoa();
 
-        pessoa.setName(pessoaRequestDTO.getNome());
+        pessoa.setNome(pessoaRequestDTO.getNome());
         pessoa.setDataNascimento(pessoaRequestDTO.getDataNascimento());
         pessoa.setEnderecos(pessoaRequestDTO.getEnderecos());
 
@@ -41,7 +41,7 @@ public class MapStructMapperImpl implements MapStructMapper {
         PessoaResponseDTO pessoaResponseDTO = new PessoaResponseDTO();
 
         pessoaResponseDTO.setId(pessoa.getId());
-        pessoaResponseDTO.setNome(pessoa.getName());
+        pessoaResponseDTO.setNome(pessoa.getNome());
         pessoaResponseDTO.setDataNascimento(pessoa.getDataNascimento());
         pessoaResponseDTO.setEnderecos(pessoa.getEnderecos());
 
@@ -60,7 +60,7 @@ public class MapStructMapperImpl implements MapStructMapper {
         endereco.setCep(enderecoRequestDTO.getCep());
         endereco.setNumero(enderecoRequestDTO.getNumero());
         endereco.setCidade(enderecoRequestDTO.getCidade());
-        endereco.setEnderecoPrincipal(endereco.isEnderecoPrincipal());
+        endereco.setTipoEndereco(endereco.getTipoEndereco());
         endereco.setPessoa(enderecoRequestDTO.getPessoa());
 
         return endereco;
@@ -78,7 +78,7 @@ public class MapStructMapperImpl implements MapStructMapper {
         enderecoResponseDTO.setCep(endereco.getCep());
         enderecoResponseDTO.setNumero(endereco.getNumero());
         enderecoResponseDTO.setCidade(endereco.getCidade());
-        enderecoResponseDTO.setEnderecoPrincipal(endereco.isEnderecoPrincipal());
+        enderecoResponseDTO.setTipoEndereco(endereco.getTipoEndereco());
         enderecoResponseDTO.setPessoa(endereco.getPessoa());
 
         return enderecoResponseDTO;

@@ -1,6 +1,7 @@
-package com.gabrielxavier.gerenciamentopessoa.mapstruct.dtos;
+package com.gabrielxavier.gerenciamentopessoa.dtos;
 
 import com.gabrielxavier.gerenciamentopessoa.entity.Pessoa;
+import com.gabrielxavier.gerenciamentopessoa.entity.enums.TipoEndereco;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -18,7 +19,7 @@ public class EnderecoResponseDTO {
 
     private String cidade;
 
-    private boolean enderecoPrincipal;
+    private TipoEndereco tipoEndereco;
 
     private Pessoa pessoa;
 }
