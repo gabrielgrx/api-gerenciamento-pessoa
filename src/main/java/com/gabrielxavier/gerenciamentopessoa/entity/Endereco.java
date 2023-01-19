@@ -2,28 +2,35 @@ package com.gabrielxavier.gerenciamentopessoa.entity;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Pattern;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
-@Data
+import java.io.Serializable;
+import java.util.Objects;
+
+@Getter
+@Setter
+@AllArgsConstructor
 @NoArgsConstructor
 @Entity
-public class Endereco {
+@Table(name = "tb_endereco")
+public class Endereco implements Serializable {
+    private static final long serialVersionUID = 1L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
+    @Setter(AccessLevel.PRIVATE)
     private Long id;
 
     @Column(name = "logradouro", nullable = false)
     private String logradouro;
 
-    @Pattern(regexp = "^\\[0-9]{5}-[0-9]{3}$" )
+    @Pattern(regexp = "^\\[0-9]{5}-[0-9]{3}$")
     @Column(name = "CEP", nullable = false)
     private String cep;
 
     @Column(name = "numero", nullable = false)
-    private int numero;
+    private Integer numero;
 
     @Column(name = "cidade", nullable = false)
     private String cidade;
@@ -31,4 +38,20 @@ public class Endereco {
     @ManyToOne
     @JoinColumn(name = "id_pessoa")
     private Pessoa pessoa;
+
+    @JoinColumn(name = "endereco_principal")
+    private boolean enderecoPrincipal;
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Endereco endereco = (Endereco) o;
+        return Objects.equals(id, endereco.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
+    }
 }
