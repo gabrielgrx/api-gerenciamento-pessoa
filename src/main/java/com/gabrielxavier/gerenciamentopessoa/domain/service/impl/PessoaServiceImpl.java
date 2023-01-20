@@ -9,13 +9,10 @@ import com.gabrielxavier.gerenciamentopessoa.domain.exceptions.PessoaNaoEncontra
 import com.gabrielxavier.gerenciamentopessoa.domain.repository.PessoaRepository;
 import com.gabrielxavier.gerenciamentopessoa.domain.service.PessoaService;
 import jakarta.transaction.Transactional;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
-import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
 @Service
@@ -47,30 +44,38 @@ public class PessoaServiceImpl implements PessoaService {
 
     @Transactional
     @Override
-    public List<PessoaResponseDTO> listarTodos() {
+    public List<PessoaResponseDTO> listarTodasPessoas() {
         List<Pessoa> list = pessoaRepository.findAll();
         return list.stream()
                 .map(p -> pessoaMapper.pessoaToPessoaResponseDto(p)).collect(Collectors.toList());
     }
 
+    @Transactional
     @Override
     public PessoaResponseDTO buscarPorId(Long id) {
-        Pessoa pessoa = pessoaRepository.findById(id)
-                .orElseThrow(() -> new PessoaNaoEncontradaException("Pessoa não encontrada"));
+        Pessoa pessoa = findByIdPessoa(id);
         return pessoaMapper.pessoaToPessoaResponseDto(pessoa);
     }
 
+    @Transactional
     @Override
     public PessoaResponseDTO atualizarPessoa(Long id, PessoaRequestDTO pessoaRequestDTO) {
 
-        Pessoa pessoaParaAtualizar = pessoaRepository.findById(id)
-                .orElseThrow(() -> new PessoaNaoEncontradaException("Pessoa não encontrada"));
+        Pessoa pessoaParaAtualizar = findByIdPessoa(id);
 
         atualizarDados(pessoaParaAtualizar, pessoaRequestDTO);
         pessoaRepository.save(pessoaParaAtualizar);
 
         return pessoaMapper.pessoaToPessoaResponseDto(pessoaParaAtualizar);
     }
+
+    @Transactional
+    @Override
+    public void deletarPessoaPorId(Long id) {
+        findByIdPessoa(id);
+        pessoaRepository.deleteById(id);
+    }
+
 
     private void atualizarDados(Pessoa pessoa, PessoaRequestDTO pessoaRequestDTO) {
         pessoa.setNome(pessoaRequestDTO.getNome());
@@ -82,6 +87,12 @@ public class PessoaServiceImpl implements PessoaService {
         return pessoaRepository.findByNome(pessoaRequestDTO.getNome())
                 .stream()
                 .anyMatch(pessoa -> !pessoa.equals(pessoaRequestDTO.getNome()));
+    }
+
+    private Pessoa findByIdPessoa(Long id) {
+        Pessoa pessoa = pessoaRepository.findById(id)
+                .orElseThrow(() -> new PessoaNaoEncontradaException("Pessoa não encontrada"));
+        return pessoa;
     }
 
 }

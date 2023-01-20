@@ -9,9 +9,11 @@ public interface PessoaService {
 
     PessoaResponseDTO adicionarPessoa(PessoaRequestDTO pessoaRequestDTO);
 
-    List<PessoaResponseDTO> listarTodos();
+    List<PessoaResponseDTO> listarTodasPessoas();
 
     PessoaResponseDTO buscarPorId(Long id);
 
     PessoaResponseDTO atualizarPessoa(Long id, PessoaRequestDTO pessoaRequestDTO);
+
+    void deletarPessoaPorId(Long id);
 }
