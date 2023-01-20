@@ -37,4 +37,10 @@ public class PessoaController {
     public ResponseEntity<PessoaResponseDTO> buscarPorId(@PathVariable Long id) {
         return ResponseEntity.status(HttpStatus.ACCEPTED).body(pessoaService.buscarPorId(id));
     }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<PessoaResponseDTO> atualziarPessoa(@PathVariable Long id, @RequestBody PessoaRequestDTO pessoaRequestDTO) {
+        PessoaResponseDTO pessoaResponseDTO = pessoaService.atualizarPessoa(id, pessoaRequestDTO);
+        return ResponseEntity.status(HttpStatus.OK).body(pessoaResponseDTO);
+    }
 }

@@ -4,7 +4,6 @@ import com.gabrielxavier.gerenciamentopessoa.api.dtos.PessoaRequestDTO;
 import com.gabrielxavier.gerenciamentopessoa.api.dtos.PessoaResponseDTO;
 
 import java.util.List;
-import java.util.Optional;
 
 public interface PessoaService {
 
@@ -13,4 +12,6 @@ public interface PessoaService {
     List<PessoaResponseDTO> listarTodos();
 
     PessoaResponseDTO buscarPorId(Long id);
+
+    PessoaResponseDTO atualizarPessoa(Long id, PessoaRequestDTO pessoaRequestDTO);
 }
