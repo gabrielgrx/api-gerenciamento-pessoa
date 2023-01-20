@@ -1,7 +1,8 @@
-package com.gabrielxavier.gerenciamentopessoa.dtos;
+package com.gabrielxavier.gerenciamentopessoa.api.dtos;
 
-import com.gabrielxavier.gerenciamentopessoa.entity.Pessoa;
-import com.gabrielxavier.gerenciamentopessoa.entity.enums.TipoEndereco;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.gabrielxavier.gerenciamentopessoa.domain.entity.Pessoa;
+import com.gabrielxavier.gerenciamentopessoa.domain.entity.enums.TipoEndereco;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;

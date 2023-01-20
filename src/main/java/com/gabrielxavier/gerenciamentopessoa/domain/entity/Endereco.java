@@ -1,7 +1,9 @@
-package com.gabrielxavier.gerenciamentopessoa.entity;
+package com.gabrielxavier.gerenciamentopessoa.domain.entity;
 
-import com.gabrielxavier.gerenciamentopessoa.entity.enums.TipoEndereco;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.gabrielxavier.gerenciamentopessoa.domain.entity.enums.TipoEndereco;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Pattern;
 import lombok.*;
 
 import java.io.Serializable;
@@ -25,7 +27,7 @@ public class Endereco implements Serializable {
     @Column(name = "logradouro", nullable = false)
     private String logradouro;
 
-//    @Pattern(regexp = "^\\[0-9]{5}-[0-9]{3}$")
+    @Pattern(regexp = "^[0-9]{5}-[0-9]{3}$")
     @Column(name = "CEP", nullable = false)
     private String cep;
 
@@ -37,6 +39,7 @@ public class Endereco implements Serializable {
 
     @ManyToOne
     @JoinColumn(name = "id_pessoa")
+    @JsonIgnore
     private Pessoa pessoa;
 
     @Enumerated(EnumType.STRING)

@@ -1,11 +1,9 @@
-package com.gabrielxavier.gerenciamentopessoa.entity;
+package com.gabrielxavier.gerenciamentopessoa.domain.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.*;
-import org.springframework.format.annotation.DateTimeFormat;
 
 import java.io.Serializable;
 import java.time.LocalDate;
@@ -29,11 +27,9 @@ public class Pessoa implements Serializable {
     private Long id;
 
     @Column(name = "nome")
-    @NotBlank
     @Size(max = 60)
     private String nome;
 
-    @DateTimeFormat(pattern = "dd/MM/yyyy")
     @Column(name = "Data de nascimento", nullable = false)
     private LocalDate dataNascimento;
 

@@ -1,7 +1,7 @@
-package com.gabrielxavier.gerenciamentopessoa.dtos;
+package com.gabrielxavier.gerenciamentopessoa.api.dtos;
 
-import com.gabrielxavier.gerenciamentopessoa.entity.Pessoa;
-import com.gabrielxavier.gerenciamentopessoa.entity.enums.TipoEndereco;
+import com.gabrielxavier.gerenciamentopessoa.domain.entity.Pessoa;
+import com.gabrielxavier.gerenciamentopessoa.domain.entity.enums.TipoEndereco;
 import lombok.Getter;
 import lombok.Setter;
 

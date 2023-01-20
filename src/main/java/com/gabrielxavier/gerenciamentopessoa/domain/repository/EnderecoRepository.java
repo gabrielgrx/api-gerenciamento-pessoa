@@ -1,6 +1,6 @@
-package com.gabrielxavier.gerenciamentopessoa.repository;
+package com.gabrielxavier.gerenciamentopessoa.domain.repository;
 
-import com.gabrielxavier.gerenciamentopessoa.entity.Endereco;
+import com.gabrielxavier.gerenciamentopessoa.domain.entity.Endereco;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

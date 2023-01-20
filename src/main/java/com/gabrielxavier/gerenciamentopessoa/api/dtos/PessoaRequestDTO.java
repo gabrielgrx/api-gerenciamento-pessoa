@@ -1,7 +1,8 @@
-package com.gabrielxavier.gerenciamentopessoa.dtos;
+package com.gabrielxavier.gerenciamentopessoa.api.dtos;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.gabrielxavier.gerenciamentopessoa.entity.Endereco;
+import com.gabrielxavier.gerenciamentopessoa.domain.entity.Endereco;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
@@ -13,11 +14,11 @@ import java.util.List;
 @Setter
 public class PessoaRequestDTO {
 
-    @NotNull(message = "Você deve informar um nome")
+    @NotBlank(message = "Você deve informar um nome")
     private String nome;
 
     @NotNull(message = "Você deve informar uma data de nascimento")
-    @JsonFormat(pattern = "dd/MM/yyyy")
+    @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDate dataNascimento;
 
     private List<Endereco> enderecos;

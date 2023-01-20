@@ -1,21 +1,15 @@
-package com.gabrielxavier.gerenciamentopessoa.mapper;
+package com.gabrielxavier.gerenciamentopessoa.common.mapper;
 
-import com.gabrielxavier.gerenciamentopessoa.entity.Endereco;
-import com.gabrielxavier.gerenciamentopessoa.entity.Pessoa;
-import com.gabrielxavier.gerenciamentopessoa.dtos.EnderecoRequestDTO;
-import com.gabrielxavier.gerenciamentopessoa.dtos.EnderecoResponseDTO;
-import com.gabrielxavier.gerenciamentopessoa.dtos.PessoaRequestDTO;
-import com.gabrielxavier.gerenciamentopessoa.dtos.PessoaResponseDTO;
-import com.gabrielxavier.gerenciamentopessoa.repository.EnderecoRepository;
+import com.gabrielxavier.gerenciamentopessoa.api.dtos.EnderecoRequestDTO;
+import com.gabrielxavier.gerenciamentopessoa.api.dtos.EnderecoResponseDTO;
+import com.gabrielxavier.gerenciamentopessoa.api.dtos.PessoaRequestDTO;
+import com.gabrielxavier.gerenciamentopessoa.api.dtos.PessoaResponseDTO;
+import com.gabrielxavier.gerenciamentopessoa.domain.entity.Endereco;
+import com.gabrielxavier.gerenciamentopessoa.domain.entity.Pessoa;
 import org.springframework.stereotype.Component;
 
 @Component
 public class MapStructMapperImpl implements MapStructMapper {
-    private final EnderecoRepository enderecoRepository;
-
-    public MapStructMapperImpl(EnderecoRepository enderecoRepository) {
-        this.enderecoRepository = enderecoRepository;
-    }
 
     @Override
     public Pessoa pessoaRequestDtoToPessoa(PessoaRequestDTO pessoaRequestDTO) {
@@ -43,7 +37,6 @@ public class MapStructMapperImpl implements MapStructMapper {
         pessoaResponseDTO.setId(pessoa.getId());
         pessoaResponseDTO.setNome(pessoa.getNome());
         pessoaResponseDTO.setDataNascimento(pessoa.getDataNascimento());
-        pessoaResponseDTO.setEnderecos(pessoa.getEnderecos());
 
         return pessoaResponseDTO;
     }

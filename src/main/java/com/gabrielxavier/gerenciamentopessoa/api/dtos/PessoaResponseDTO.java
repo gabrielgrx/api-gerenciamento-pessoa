@@ -1,7 +1,7 @@
-package com.gabrielxavier.gerenciamentopessoa.dtos;
+package com.gabrielxavier.gerenciamentopessoa.api.dtos;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.gabrielxavier.gerenciamentopessoa.entity.Endereco;
+import com.gabrielxavier.gerenciamentopessoa.domain.entity.Endereco;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -16,9 +16,6 @@ public class PessoaResponseDTO {
 
     private String nome;
 
-    @JsonFormat(pattern = "dd/MM/yyyy")
     private LocalDate dataNascimento;
-
-    private List<Endereco> enderecos;
 
 }
