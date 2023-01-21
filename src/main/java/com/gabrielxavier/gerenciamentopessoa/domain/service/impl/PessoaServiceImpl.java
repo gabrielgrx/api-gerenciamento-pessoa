@@ -22,7 +22,7 @@ public class PessoaServiceImpl implements PessoaService {
     private PessoaRepository pessoaRepository;
 
     @Autowired
-    private MapStructMapperImpl pessoaMapper;
+    private MapStructMapperImpl mapStructMapper;
 
     @Transactional
     @Override
@@ -32,29 +32,25 @@ public class PessoaServiceImpl implements PessoaService {
             throw new NegocioException("Já existe uma pessoa cadastrada com este nome.");
         }
 
-        Pessoa pessoa = pessoaMapper.pessoaRequestDtoToPessoa(pessoaRequestDTO);
-
-        if (pessoaRequestDTO.getEnderecos() != null) {
-            pessoa.getEnderecos().forEach(e -> e.setPessoa(pessoa));
-        }
+        Pessoa pessoa = mapStructMapper.pessoaRequestDtoToPessoa(pessoaRequestDTO);
 
         pessoaRepository.save(pessoa);
-        return pessoaMapper.pessoaToPessoaResponseDto(pessoa);
+        return mapStructMapper.pessoaToPessoaResponseDto(pessoa);
     }
 
     @Transactional
     @Override
-    public List<PessoaResponseDTO> listarTodasPessoas() {
-        List<Pessoa> list = pessoaRepository.findAll();
-        return list.stream()
-                .map(p -> pessoaMapper.pessoaToPessoaResponseDto(p)).collect(Collectors.toList());
+    public List<PessoaResponseDTO> listarPessoas() {
+        List<Pessoa> pessoas = pessoaRepository.findAll();
+        return pessoas.stream()
+                .map(p -> mapStructMapper.pessoaToPessoaResponseDto(p)).collect(Collectors.toList());
     }
 
     @Transactional
     @Override
     public PessoaResponseDTO buscarPorId(Long id) {
         Pessoa pessoa = findByIdPessoa(id);
-        return pessoaMapper.pessoaToPessoaResponseDto(pessoa);
+        return mapStructMapper.pessoaToPessoaResponseDto(pessoa);
     }
 
     @Transactional
@@ -66,7 +62,7 @@ public class PessoaServiceImpl implements PessoaService {
         atualizarDados(pessoaParaAtualizar, pessoaRequestDTO);
         pessoaRepository.save(pessoaParaAtualizar);
 
-        return pessoaMapper.pessoaToPessoaResponseDto(pessoaParaAtualizar);
+        return mapStructMapper.pessoaToPessoaResponseDto(pessoaParaAtualizar);
     }
 
     @Transactional
@@ -80,7 +76,6 @@ public class PessoaServiceImpl implements PessoaService {
     private void atualizarDados(Pessoa pessoa, PessoaRequestDTO pessoaRequestDTO) {
         pessoa.setNome(pessoaRequestDTO.getNome());
         pessoa.setDataNascimento(pessoaRequestDTO.getDataNascimento());
-        pessoa.setEnderecos(pessoaRequestDTO.getEnderecos());
     }
 
     private boolean nomeExiste(PessoaRequestDTO pessoaRequestDTO) {
@@ -90,9 +85,8 @@ public class PessoaServiceImpl implements PessoaService {
     }
 
     private Pessoa findByIdPessoa(Long id) {
-        Pessoa pessoa = pessoaRepository.findById(id)
+        return pessoaRepository.findById(id)
                 .orElseThrow(() -> new PessoaNaoEncontradaException("Pessoa não encontrada"));
-        return pessoa;
     }
 
 }

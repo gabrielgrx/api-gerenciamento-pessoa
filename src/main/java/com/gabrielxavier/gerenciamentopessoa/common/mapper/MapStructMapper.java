@@ -1,11 +1,11 @@
 package com.gabrielxavier.gerenciamentopessoa.common.mapper;
 
-import com.gabrielxavier.gerenciamentopessoa.domain.entity.Endereco;
-import com.gabrielxavier.gerenciamentopessoa.domain.entity.Pessoa;
 import com.gabrielxavier.gerenciamentopessoa.api.dtos.EnderecoRequestDTO;
 import com.gabrielxavier.gerenciamentopessoa.api.dtos.EnderecoResponseDTO;
 import com.gabrielxavier.gerenciamentopessoa.api.dtos.PessoaRequestDTO;
 import com.gabrielxavier.gerenciamentopessoa.api.dtos.PessoaResponseDTO;
+import com.gabrielxavier.gerenciamentopessoa.domain.entity.Endereco;
+import com.gabrielxavier.gerenciamentopessoa.domain.entity.Pessoa;
 import org.mapstruct.Mapper;
 
 @Mapper(componentModel = "spring")

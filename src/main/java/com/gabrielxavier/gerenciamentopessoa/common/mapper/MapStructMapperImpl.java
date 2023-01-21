@@ -21,7 +21,6 @@ public class MapStructMapperImpl implements MapStructMapper {
 
         pessoa.setNome(pessoaRequestDTO.getNome());
         pessoa.setDataNascimento(pessoaRequestDTO.getDataNascimento());
-        pessoa.setEnderecos(pessoaRequestDTO.getEnderecos());
 
         return pessoa;
     }
@@ -53,8 +52,7 @@ public class MapStructMapperImpl implements MapStructMapper {
         endereco.setCep(enderecoRequestDTO.getCep());
         endereco.setNumero(enderecoRequestDTO.getNumero());
         endereco.setCidade(enderecoRequestDTO.getCidade());
-        endereco.setTipoEndereco(endereco.getTipoEndereco());
-        endereco.setPessoa(enderecoRequestDTO.getPessoa());
+        endereco.setTipoEndereco(enderecoRequestDTO.getTipoEndereco());
 
         return endereco;
     }
@@ -67,12 +65,12 @@ public class MapStructMapperImpl implements MapStructMapper {
 
         EnderecoResponseDTO enderecoResponseDTO = new EnderecoResponseDTO();
 
+        enderecoResponseDTO.setId(endereco.getId());
         enderecoResponseDTO.setLogradouro(endereco.getLogradouro());
         enderecoResponseDTO.setCep(endereco.getCep());
         enderecoResponseDTO.setNumero(endereco.getNumero());
         enderecoResponseDTO.setCidade(endereco.getCidade());
         enderecoResponseDTO.setTipoEndereco(endereco.getTipoEndereco());
-        enderecoResponseDTO.setPessoa(endereco.getPessoa());
 
         return enderecoResponseDTO;
     }

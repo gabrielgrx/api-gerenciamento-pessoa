@@ -1,6 +1,5 @@
 package com.gabrielxavier.gerenciamentopessoa.api.controller;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import com.gabrielxavier.gerenciamentopessoa.api.dtos.PessoaRequestDTO;
 import com.gabrielxavier.gerenciamentopessoa.api.dtos.PessoaResponseDTO;
 import com.gabrielxavier.gerenciamentopessoa.domain.service.impl.PessoaServiceImpl;
@@ -29,8 +28,8 @@ public class PessoaController {
     }
 
     @GetMapping
-    public ResponseEntity<List<PessoaResponseDTO>> listarTodasPessoas() {
-        return ResponseEntity.status(HttpStatus.OK).body(pessoaService.listarTodasPessoas());
+    public ResponseEntity<List<PessoaResponseDTO>> listarPessoas() {
+        return ResponseEntity.status(HttpStatus.OK).body(pessoaService.listarPessoas());
     }
 
     @GetMapping("/{id}")

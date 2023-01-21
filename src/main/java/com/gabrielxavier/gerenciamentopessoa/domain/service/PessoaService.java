@@ -9,7 +9,7 @@ public interface PessoaService {
 
     PessoaResponseDTO adicionarPessoa(PessoaRequestDTO pessoaRequestDTO);
 
-    List<PessoaResponseDTO> listarTodasPessoas();
+    List<PessoaResponseDTO> listarPessoas();
 
     PessoaResponseDTO buscarPorId(Long id);
 

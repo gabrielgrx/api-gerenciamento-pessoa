@@ -35,6 +35,7 @@ public class Pessoa implements Serializable {
 
     @JsonIgnore
     @OneToMany(mappedBy = "pessoa", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @Setter(AccessLevel.NONE)
     private List<Endereco> enderecos = new ArrayList<>();
 
     @Override
