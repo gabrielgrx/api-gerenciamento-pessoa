@@ -1,5 +1,6 @@
 package com.gabrielxavier.gerenciamentopessoa.api.exceptionhandler;
 
+import com.gabrielxavier.gerenciamentopessoa.domain.exceptions.EnderecoNaoEncontradoException;
 import com.gabrielxavier.gerenciamentopessoa.domain.exceptions.NegocioException;
 import com.gabrielxavier.gerenciamentopessoa.domain.exceptions.PessoaNaoEncontradaException;
 import org.springframework.http.HttpHeaders;
@@ -53,6 +54,13 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(PessoaNaoEncontradaException.class)
     public ResponseEntity<Object> handlePessoaNaoEncontrada(NegocioException ex, WebRequest request) {
+
+        HttpStatus status = HttpStatus.NOT_FOUND;
+        return handleExceptionInternal(ex, getProblema(ex, status), new HttpHeaders(), status, request);
+    }
+
+    @ExceptionHandler(EnderecoNaoEncontradoException.class)
+    public ResponseEntity<Object> handleEnderecoNaoEncontrado(NegocioException ex, WebRequest request) {
 
         HttpStatus status = HttpStatus.NOT_FOUND;
         return handleExceptionInternal(ex, getProblema(ex, status), new HttpHeaders(), status, request);

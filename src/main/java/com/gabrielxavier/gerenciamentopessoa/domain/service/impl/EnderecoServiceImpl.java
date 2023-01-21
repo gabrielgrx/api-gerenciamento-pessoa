@@ -6,6 +6,7 @@ import com.gabrielxavier.gerenciamentopessoa.common.mapper.MapStructMapperImpl;
 import com.gabrielxavier.gerenciamentopessoa.domain.entity.Endereco;
 import com.gabrielxavier.gerenciamentopessoa.domain.entity.Pessoa;
 import com.gabrielxavier.gerenciamentopessoa.domain.entity.enums.TipoEndereco;
+import com.gabrielxavier.gerenciamentopessoa.domain.exceptions.EnderecoNaoEncontradoException;
 import com.gabrielxavier.gerenciamentopessoa.domain.exceptions.NegocioException;
 import com.gabrielxavier.gerenciamentopessoa.domain.exceptions.PessoaNaoEncontradaException;
 import com.gabrielxavier.gerenciamentopessoa.domain.repository.EnderecoRepository;
@@ -61,8 +62,20 @@ public class EnderecoServiceImpl implements EnderecoService {
         throw new NegocioException("Esta pessao não tem um endereço principal registrado");
     }
 
+    @Override
+    public void deletarEnderecoPorId(Long pessoaId, Long enderecoId) {
+        findByIdPessoa(pessoaId);
+        findByIdEndereco(enderecoId);
+        enderecoRepository.deleteById(enderecoId);
+    }
+
     private Pessoa findByIdPessoa(Long id) {
         return pessoaRepository.findById(id)
                 .orElseThrow(() -> new PessoaNaoEncontradaException("Pessoa não encontrada"));
+    }
+
+    private Pessoa findByIdEndereco(Long id) {
+        return enderecoRepository.findById(id)
+                .orElseThrow(() -> new EnderecoNaoEncontradoException("Endereço não existe")).getPessoa();
     }
 }

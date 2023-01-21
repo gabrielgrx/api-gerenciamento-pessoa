@@ -39,4 +39,10 @@ public class EnderecoController {
         return ResponseEntity.status(HttpStatus.ACCEPTED)
                 .body(enderecoService.mostrarEnderecoPrincipal(pessoaId, enderecoRequestDTO));
     }
+
+    @DeleteMapping("/enderecos/{enderecoId}")
+    public ResponseEntity<Void> deletarEndereco(@PathVariable(name = "id") Long pessoaId,@PathVariable(name = "enderecoId") Long enderecoId) {
+        enderecoService.deletarEnderecoPorId(pessoaId, enderecoId);
+        return ResponseEntity.noContent().build();
+    }
 }

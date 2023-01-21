@@ -12,4 +12,6 @@ public interface EnderecoService {
     List<EnderecoResponseDTO> listarTodosEnderecos(Long pessoaId);
 
     EnderecoResponseDTO mostrarEnderecoPrincipal(Long PessoaId, EnderecoRequestDTO enderecoRequestDTO);
+
+    void deletarEnderecoPorId(Long pessoaId, Long enderecoId);
 }
