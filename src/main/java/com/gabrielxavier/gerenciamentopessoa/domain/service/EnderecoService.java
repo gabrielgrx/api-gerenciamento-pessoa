@@ -10,7 +10,9 @@ public interface EnderecoService {
 
     CollectionModel<EnderecoResponseDTO> listarTodosEnderecos(Long pessoaId);
 
-    EnderecoResponseDTO mostrarEnderecoPrincipal(Long PessoaId);
+    EnderecoResponseDTO mostrarEnderecoPrincipal(Long pessoaId);
 
     void deletarEnderecoPorId(Long pessoaId, Long enderecoId);
+
+    EnderecoResponseDTO atualizarEndereco(Long pessoaid, Long enderecoId, EnderecoRequestDTO enderecoRequestDTO);
 }

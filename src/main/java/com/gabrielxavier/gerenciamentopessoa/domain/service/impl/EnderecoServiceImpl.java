@@ -2,6 +2,7 @@ package com.gabrielxavier.gerenciamentopessoa.domain.service.impl;
 
 import com.gabrielxavier.gerenciamentopessoa.api.dtos.EnderecoRequestDTO;
 import com.gabrielxavier.gerenciamentopessoa.api.dtos.EnderecoResponseDTO;
+import com.gabrielxavier.gerenciamentopessoa.api.dtos.PessoaRequestDTO;
 import com.gabrielxavier.gerenciamentopessoa.common.mapper.MapStructMapperImpl;
 import com.gabrielxavier.gerenciamentopessoa.domain.entity.Endereco;
 import com.gabrielxavier.gerenciamentopessoa.domain.entity.Pessoa;
@@ -13,6 +14,7 @@ import com.gabrielxavier.gerenciamentopessoa.domain.repository.EnderecoRepositor
 import com.gabrielxavier.gerenciamentopessoa.domain.repository.PessoaRepository;
 import com.gabrielxavier.gerenciamentopessoa.domain.service.EnderecoService;
 import jakarta.transaction.Transactional;
+import jakarta.validation.ConstraintViolationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.stereotype.Service;
@@ -35,17 +37,22 @@ public class EnderecoServiceImpl implements EnderecoService {
     @Transactional
     @Override
     public EnderecoResponseDTO adicionarEndereco(Long pessoaId, EnderecoRequestDTO enderecoRequestDTO) {
-        Pessoa pessoa = findByIdPessoa(pessoaId);
+        try {
+            Pessoa pessoa = findByIdPessoa(pessoaId);
 
-        if (enderecoExiste(pessoa, enderecoRequestDTO)) {
-            throw new NegocioException("Este endereço já está cadastrado para essa pessoa");
+            if (enderecoExiste(pessoa, enderecoRequestDTO)) {
+                throw new NegocioException("Este endereço já está cadastrado para essa pessoa");
+            }
+
+            Endereco endereco = mapStructMapper.enderecoRequestDtoToEndereco(enderecoRequestDTO);
+
+            endereco.setPessoa(pessoa);
+            enderecoRepository.save(endereco);
+            return mapStructMapper.enderecoToenderecoResponseDto(endereco);
+
+        } catch (ConstraintViolationException e) {
+            throw new NegocioException("O CEP deve ser no formato 00000-000");
         }
-
-        Endereco endereco = mapStructMapper.enderecoRequestDtoToEndereco(enderecoRequestDTO);
-
-        endereco.setPessoa(pessoa);
-        enderecoRepository.save(endereco);
-        return mapStructMapper.enderecoToenderecoResponseDto(endereco);
     }
 
     @Transactional
@@ -76,14 +83,28 @@ public class EnderecoServiceImpl implements EnderecoService {
         enderecoRepository.deleteById(enderecoId);
     }
 
+    @Transactional
+    @Override
+    public EnderecoResponseDTO atualizarEndereco(Long pessoaid, Long enderecoId, EnderecoRequestDTO enderecoRequestDTO) {
+
+        findByIdPessoa(pessoaid);
+
+        Endereco enderecoParaAtualizar = findByIdEndereco(enderecoId);
+
+        atualizarDadosEndereco(enderecoParaAtualizar, enderecoRequestDTO);
+        enderecoRepository.save(enderecoParaAtualizar);
+
+        return mapStructMapper.enderecoToenderecoResponseDto(enderecoParaAtualizar);
+    }
+
     private Pessoa findByIdPessoa(Long id) {
         return pessoaRepository.findById(id)
                 .orElseThrow(() -> new PessoaNaoEncontradaException("Pessoa não encontrada"));
     }
 
-    private Pessoa findByIdEndereco(Long id) {
+    private Endereco findByIdEndereco(Long id) {
         return enderecoRepository.findById(id)
-                .orElseThrow(() -> new EnderecoNaoEncontradoException("Endereço não existe")).getPessoa();
+                .orElseThrow(() -> new EnderecoNaoEncontradoException("Endereço não existe"));
     }
 
     private boolean enderecoExiste(Pessoa pessoa, EnderecoRequestDTO enderecoRequestDTO) {
@@ -96,5 +117,13 @@ public class EnderecoServiceImpl implements EnderecoService {
             }
         }
         return false;
+    }
+
+    private void atualizarDadosEndereco(Endereco endereco, EnderecoRequestDTO enderecoRequestDTO) {
+        endereco.setLogradouro(enderecoRequestDTO.getLogradouro());
+        endereco.setNumero(enderecoRequestDTO.getNumero());
+        endereco.setCep(enderecoRequestDTO.getCep());
+        endereco.setCidade(enderecoRequestDTO.getCidade());
+        endereco.setTipoEndereco(enderecoRequestDTO.getTipoEndereco());
     }
 }

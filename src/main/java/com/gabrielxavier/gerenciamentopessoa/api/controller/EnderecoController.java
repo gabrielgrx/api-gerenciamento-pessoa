@@ -21,25 +21,39 @@ public class EnderecoController {
     EnderecoServiceImpl enderecoService;
 
     @PostMapping("/enderecos")
-    public ResponseEntity<EnderecoResponseDTO> adicionarEndereco(@PathVariable(name = "id") Long pessoaId, @RequestBody @Valid EnderecoRequestDTO enderecoRequestDTO) {
+    public ResponseEntity<EnderecoResponseDTO> adicionarEndereco(@PathVariable(name = "id") Long pessoaId,
+                                                                 @RequestBody @Valid EnderecoRequestDTO enderecoRequestDTO) {
+
         EnderecoResponseDTO enderecoResponseDTO = enderecoService.adicionarEndereco(pessoaId, enderecoRequestDTO);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(enderecoResponseDTO.getId()).toUri();
+
         return ResponseEntity.created(uri).body(enderecoResponseDTO);
     }
 
     @GetMapping("/enderecos")
     public ResponseEntity<CollectionModel<EnderecoResponseDTO>> listarEnderecos(@PathVariable(name = "id") Long PessoaId) {
+
         return ResponseEntity.status(HttpStatus.OK).body(enderecoService.listarTodosEnderecos(PessoaId));
     }
 
     @GetMapping("/enderecos/principal")
     public ResponseEntity<EnderecoResponseDTO> mostrarEnderecoPrincipal(@PathVariable(name = "id") Long pessoaId) {
-        return ResponseEntity.status(HttpStatus.ACCEPTED)
-                .body(enderecoService.mostrarEnderecoPrincipal(pessoaId));
+
+        return ResponseEntity.status(HttpStatus.ACCEPTED).body(enderecoService.mostrarEnderecoPrincipal(pessoaId));
+    }
+
+    @PutMapping("/enderecos/{enderecoId}")
+    public ResponseEntity<EnderecoResponseDTO> deletarEndereco(@PathVariable(name = "id") Long pessoaId,
+                                                               @PathVariable(name = "enderecoId") Long enderecoId,
+                                                               @RequestBody EnderecoRequestDTO enderecoRequestDTO) {
+
+        EnderecoResponseDTO enderecoResponseDTO = enderecoService.atualizarEndereco(pessoaId, enderecoId, enderecoRequestDTO);
+        return ResponseEntity.status(HttpStatus.OK).body(enderecoResponseDTO);
     }
 
     @DeleteMapping("/enderecos/{enderecoId}")
-    public ResponseEntity<Void> deletarEndereco(@PathVariable(name = "id") Long pessoaId,@PathVariable(name = "enderecoId") Long enderecoId) {
+    public ResponseEntity<Void> deletarEndereco(@PathVariable(name = "id") Long pessoaId, @PathVariable(name = "enderecoId") Long enderecoId) {
+
         enderecoService.deletarEnderecoPorId(pessoaId, enderecoId);
         return ResponseEntity.noContent().build();
     }

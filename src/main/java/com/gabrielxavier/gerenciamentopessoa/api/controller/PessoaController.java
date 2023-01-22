@@ -22,6 +22,7 @@ public class PessoaController {
 
     @PostMapping
     public ResponseEntity<PessoaResponseDTO> adicionarPessoa(@RequestBody @Valid PessoaRequestDTO pessoaRequestDTO) {
+
         PessoaResponseDTO pessoaResponseDTO = pessoaService.adicionarPessoa(pessoaRequestDTO);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(pessoaResponseDTO.getId()).toUri();
 
@@ -44,12 +45,14 @@ public class PessoaController {
 
     @PutMapping("/{id}")
     public ResponseEntity<PessoaResponseDTO> atualizarPessoa(@PathVariable Long id, @RequestBody PessoaRequestDTO pessoaRequestDTO) {
+
         PessoaResponseDTO pessoaResponseDTO = pessoaService.atualizarPessoa(id, pessoaRequestDTO);
         return ResponseEntity.status(HttpStatus.OK).body(pessoaResponseDTO);
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deletarPessoa(@PathVariable Long id) {
+
         pessoaService.deletarPessoaPorId(id);
         return ResponseEntity.noContent().build();
     }
