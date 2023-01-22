@@ -37,11 +37,20 @@ public class EnderecoServiceImpl implements EnderecoService {
     @Transactional
     @Override
     public EnderecoResponseDTO adicionarEndereco(Long pessoaId, EnderecoRequestDTO enderecoRequestDTO) {
+
         try {
             Pessoa pessoa = findByIdPessoa(pessoaId);
 
             if (enderecoExiste(pessoa, enderecoRequestDTO)) {
                 throw new NegocioException("Este endereço já está cadastrado para essa pessoa");
+            }
+
+            List<Endereco> enderecos = pessoa.getEnderecos();
+
+            for (Endereco enderecoBuscado : enderecos) {
+                if (enderecoBuscado.getTipoEndereco().equals(TipoEndereco.PRINCIPAL)) {
+                    throw new NegocioException("Já existe um endereço principal cadastrado para essa pesoa");
+                }
             }
 
             Endereco endereco = mapStructMapper.enderecoRequestDtoToEndereco(enderecoRequestDTO);
@@ -58,6 +67,7 @@ public class EnderecoServiceImpl implements EnderecoService {
     @Transactional
     @Override
     public CollectionModel<EnderecoResponseDTO> listarTodosEnderecos(Long pessoaId) {
+
         Pessoa pessoa = findByIdPessoa(pessoaId);
         return CollectionModel.of(pessoa.getEnderecos().stream()
                 .map(e -> mapStructMapper.enderecoToenderecoResponseDto(e)).collect(Collectors.toList()));
@@ -66,18 +76,23 @@ public class EnderecoServiceImpl implements EnderecoService {
     @Transactional
     @Override
     public EnderecoResponseDTO mostrarEnderecoPrincipal(Long pessoaId) {
-        List<EnderecoResponseDTO> listaEnderecos = (List<EnderecoResponseDTO>) listarTodosEnderecos(pessoaId);
-        for (EnderecoResponseDTO enderecoBuscado : listaEnderecos) {
+
+        Pessoa pessoa = findByIdPessoa(pessoaId);
+        List<Endereco> enderecos = pessoa.getEnderecos();
+
+        for (Endereco enderecoBuscado : enderecos) {
             if (enderecoBuscado.getTipoEndereco().equals(TipoEndereco.PRINCIPAL)) {
-                return enderecoBuscado;
+                return mapStructMapper.enderecoToenderecoResponseDto(enderecoBuscado);
             }
         }
+
         throw new NegocioException("Essa pessoa não tem um endereço principal registrado");
     }
 
     @Transactional
     @Override
     public void deletarEnderecoPorId(Long pessoaId, Long enderecoId) {
+
         findByIdPessoa(pessoaId);
         findByIdEndereco(enderecoId);
         enderecoRepository.deleteById(enderecoId);
@@ -98,16 +113,19 @@ public class EnderecoServiceImpl implements EnderecoService {
     }
 
     private Pessoa findByIdPessoa(Long id) {
+
         return pessoaRepository.findById(id)
                 .orElseThrow(() -> new PessoaNaoEncontradaException("Pessoa não encontrada"));
     }
 
     private Endereco findByIdEndereco(Long id) {
+
         return enderecoRepository.findById(id)
                 .orElseThrow(() -> new EnderecoNaoEncontradoException("Endereço não existe"));
     }
 
     private boolean enderecoExiste(Pessoa pessoa, EnderecoRequestDTO enderecoRequestDTO) {
+
         List<Endereco> pessoaEnderecos = pessoa.getEnderecos();
         for (Endereco endereco : pessoaEnderecos) {
             if (endereco.getLogradouro().equals(enderecoRequestDTO.getLogradouro())) {
@@ -120,6 +138,7 @@ public class EnderecoServiceImpl implements EnderecoService {
     }
 
     private void atualizarDadosEndereco(Endereco endereco, EnderecoRequestDTO enderecoRequestDTO) {
+
         endereco.setLogradouro(enderecoRequestDTO.getLogradouro());
         endereco.setNumero(enderecoRequestDTO.getNumero());
         endereco.setCep(enderecoRequestDTO.getCep());
