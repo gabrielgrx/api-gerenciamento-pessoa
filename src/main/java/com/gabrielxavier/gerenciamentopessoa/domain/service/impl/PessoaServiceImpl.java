@@ -10,6 +10,7 @@ import com.gabrielxavier.gerenciamentopessoa.domain.repository.PessoaRepository;
 import com.gabrielxavier.gerenciamentopessoa.domain.service.PessoaService;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.CollectionModel;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -40,10 +41,10 @@ public class PessoaServiceImpl implements PessoaService {
 
     @Transactional
     @Override
-    public List<PessoaResponseDTO> listarPessoas() {
+    public CollectionModel<PessoaResponseDTO> listarPessoas() {
         List<Pessoa> pessoas = pessoaRepository.findAll();
-        return pessoas.stream()
-                .map(p -> mapStructMapper.pessoaToPessoaResponseDto(p)).collect(Collectors.toList());
+        return CollectionModel.of(pessoas.stream()
+                .map(p -> mapStructMapper.pessoaToPessoaResponseDto(p)).collect(Collectors.toList()));
     }
 
     @Transactional

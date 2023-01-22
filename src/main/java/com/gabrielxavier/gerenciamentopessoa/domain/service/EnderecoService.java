@@ -2,16 +2,15 @@ package com.gabrielxavier.gerenciamentopessoa.domain.service;
 
 import com.gabrielxavier.gerenciamentopessoa.api.dtos.EnderecoRequestDTO;
 import com.gabrielxavier.gerenciamentopessoa.api.dtos.EnderecoResponseDTO;
-
-import java.util.List;
+import org.springframework.hateoas.CollectionModel;
 
 public interface EnderecoService {
 
     EnderecoResponseDTO adicionarEndereco(Long PessoaId, EnderecoRequestDTO enderecoRequestDTO);
 
-    List<EnderecoResponseDTO> listarTodosEnderecos(Long pessoaId);
+    CollectionModel<EnderecoResponseDTO> listarTodosEnderecos(Long pessoaId);
 
-    EnderecoResponseDTO mostrarEnderecoPrincipal(Long PessoaId, EnderecoRequestDTO enderecoRequestDTO);
+    EnderecoResponseDTO mostrarEnderecoPrincipal(Long PessoaId);
 
     void deletarEnderecoPorId(Long pessoaId, Long enderecoId);
 }

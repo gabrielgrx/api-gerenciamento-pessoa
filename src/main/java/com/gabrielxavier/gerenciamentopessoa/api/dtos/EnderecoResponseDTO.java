@@ -3,10 +3,13 @@ package com.gabrielxavier.gerenciamentopessoa.api.dtos;
 import com.gabrielxavier.gerenciamentopessoa.domain.entity.enums.TipoEndereco;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.hateoas.RepresentationModel;
+import org.springframework.hateoas.server.core.Relation;
 
+@Relation(collectionRelation = "endereços")
 @Getter
 @Setter
-public class EnderecoResponseDTO {
+public class EnderecoResponseDTO extends RepresentationModel<EnderecoResponseDTO> {
 
     private Long id;
 

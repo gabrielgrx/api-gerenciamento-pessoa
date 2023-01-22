@@ -14,6 +14,7 @@ import com.gabrielxavier.gerenciamentopessoa.domain.repository.PessoaRepository;
 import com.gabrielxavier.gerenciamentopessoa.domain.service.EnderecoService;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.CollectionModel;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -43,23 +44,22 @@ public class EnderecoServiceImpl implements EnderecoService {
 
     @Transactional
     @Override
-    public List<EnderecoResponseDTO> listarTodosEnderecos(Long pessoaId) {
+    public CollectionModel<EnderecoResponseDTO> listarTodosEnderecos(Long pessoaId) {
         Pessoa pessoa = findByIdPessoa(pessoaId);
-        List<Endereco> enderecos = pessoa.getEnderecos();
-        return enderecos.stream()
-                .map(e -> mapStructMapper.enderecoToenderecoResponseDto(e)).collect(Collectors.toList());
+        return CollectionModel.of(pessoa.getEnderecos().stream()
+                .map(e -> mapStructMapper.enderecoToenderecoResponseDto(e)).collect(Collectors.toList()));
     }
 
     @Transactional
     @Override
-    public EnderecoResponseDTO mostrarEnderecoPrincipal(Long pessoaId, EnderecoRequestDTO enderecoRequestDTO) {
-        List<EnderecoResponseDTO> listaEnderecos = listarTodosEnderecos(pessoaId);
+    public EnderecoResponseDTO mostrarEnderecoPrincipal(Long pessoaId) {
+        List<EnderecoResponseDTO> listaEnderecos = (List<EnderecoResponseDTO>) listarTodosEnderecos(pessoaId);
         for (EnderecoResponseDTO enderecoBuscado : listaEnderecos) {
             if (enderecoBuscado.getTipoEndereco().equals(TipoEndereco.PRINCIPAL)) {
                 return enderecoBuscado;
             }
         }
-        throw new NegocioException("Esta pessao não tem um endereço principal registrado");
+        throw new NegocioException("Essa pessoa não tem um endereço principal registrado");
     }
 
     @Override
