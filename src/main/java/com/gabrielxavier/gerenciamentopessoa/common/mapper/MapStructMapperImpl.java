@@ -45,35 +45,6 @@ public class MapStructMapperImpl implements MapStructMapper {
         pessoaResponseDTO.setNome(pessoa.getNome());
         pessoaResponseDTO.setDataNascimento(pessoa.getDataNascimento());
 
-        pessoaResponseDTO.add(linkTo(methodOn(PessoaController.class)
-                .buscarPorId(pessoa.getId()))
-                .withSelfRel());
-
-        pessoaResponseDTO.add(linkTo(methodOn(PessoaController.class)
-                .listarPessoas())
-                .withRel("lista de pessoas"));
-
-        List<Endereco> enderecos = pessoa.getEnderecos();
-        for (Endereco e : enderecos) {
-            if (e.getTipoEndereco() == TipoEndereco.PRINCIPAL) {
-                pessoaResponseDTO.add(linkTo(methodOn(EnderecoController.class)
-                        .mostrarEnderecoPrincipal(pessoa.getId()))
-                        .withRel("endereço principal"));
-            }
-        }
-
-        pessoaResponseDTO.add(linkTo(methodOn(EnderecoController.class)
-                .listarEnderecos(pessoa.getId()))
-                .withRel("lista de endereços desta pessoa"));
-
-        pessoaResponseDTO.add(linkTo(PessoaController.class)
-                .slash(pessoa.getId())
-                .withRel("Atualizar Pessoa"));
-
-        pessoaResponseDTO.add(linkTo(methodOn(PessoaController.class)
-                .deletarPessoa(pessoa.getId()))
-                .withRel("deletar pessoa"));
-
         return pessoaResponseDTO;
     }
 
@@ -108,14 +79,14 @@ public class MapStructMapperImpl implements MapStructMapper {
         enderecoResponseDTO.setNumero(endereco.getNumero());
         enderecoResponseDTO.setCidade(endereco.getCidade());
         enderecoResponseDTO.setTipoEndereco(endereco.getTipoEndereco());
-
-        enderecoResponseDTO.add(linkTo(methodOn(EnderecoController.class)
-                .listarEnderecos(endereco.getPessoa().getId()))
-                .withRel("lista de endereços"));
-
-        enderecoResponseDTO.add(linkTo(methodOn(EnderecoController.class)
-                .deletarEndereco(endereco.getPessoa().getId(), endereco.getId()))
-                .withRel("deletar endereço"));
+//
+//        enderecoResponseDTO.add(linkTo(methodOn(EnderecoController.class)
+//                .listarEnderecos(endereco.getPessoa().getId()))
+//                .withRel("lista de endereços"));
+//
+//        enderecoResponseDTO.add(linkTo(methodOn(EnderecoController.class)
+//                .deletarEndereco(endereco.getPessoa().getId(), endereco.getId()))
+//                .withRel("deletar endereço"));
 
         return enderecoResponseDTO;
     }

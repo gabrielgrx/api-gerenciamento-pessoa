@@ -13,6 +13,9 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
 
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
+
 @RestController
 @RequestMapping("/pessoas/{id}")
 public class EnderecoController {
@@ -27,27 +30,40 @@ public class EnderecoController {
         EnderecoResponseDTO enderecoResponseDTO = enderecoService.adicionarEndereco(pessoaId, enderecoRequestDTO);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(enderecoResponseDTO.getId()).toUri();
 
+        todosLinks(pessoaId, enderecoResponseDTO);
+
         return ResponseEntity.created(uri).body(enderecoResponseDTO);
     }
 
     @GetMapping("/enderecos")
-    public ResponseEntity<CollectionModel<EnderecoResponseDTO>> listarEnderecos(@PathVariable(name = "id") Long PessoaId) {
+    public ResponseEntity<CollectionModel<EnderecoResponseDTO>> listarEnderecos(@PathVariable(name = "id") Long pessoaId) {
 
-        return ResponseEntity.status(HttpStatus.OK).body(enderecoService.listarTodosEnderecos(PessoaId));
+        CollectionModel<EnderecoResponseDTO> enderecoResponseDTOS = enderecoService.listarTodosEnderecos(pessoaId);
+
+        enderecoResponseDTOS.forEach(e -> enderecosLink(pessoaId, e));
+
+        return ResponseEntity.status(HttpStatus.OK).body(enderecoResponseDTOS);
     }
 
     @GetMapping("/enderecos/principal")
     public ResponseEntity<EnderecoResponseDTO> mostrarEnderecoPrincipal(@PathVariable(name = "id") Long pessoaId) {
 
-        return ResponseEntity.status(HttpStatus.ACCEPTED).body(enderecoService.mostrarEnderecoPrincipal(pessoaId));
+        EnderecoResponseDTO enderecoResponseDTO = enderecoService.mostrarEnderecoPrincipal(pessoaId);
+
+        todosLinks(pessoaId, enderecoResponseDTO);
+
+        return ResponseEntity.status(HttpStatus.ACCEPTED).body(enderecoResponseDTO);
     }
 
     @PutMapping("/enderecos/{enderecoId}")
-    public ResponseEntity<EnderecoResponseDTO> deletarEndereco(@PathVariable(name = "id") Long pessoaId,
+    public ResponseEntity<EnderecoResponseDTO> atualizarEndereco(@PathVariable(name = "id") Long pessoaId,
                                                                @PathVariable(name = "enderecoId") Long enderecoId,
                                                                @RequestBody EnderecoRequestDTO enderecoRequestDTO) {
 
         EnderecoResponseDTO enderecoResponseDTO = enderecoService.atualizarEndereco(pessoaId, enderecoId, enderecoRequestDTO);
+
+        enderecoSelfLink(pessoaId, enderecoResponseDTO);
+
         return ResponseEntity.status(HttpStatus.OK).body(enderecoResponseDTO);
     }
 
@@ -56,5 +72,32 @@ public class EnderecoController {
 
         enderecoService.deletarEnderecoPorId(pessoaId, enderecoId);
         return ResponseEntity.noContent().build();
+    }
+
+    private void todosLinks(Long pessoaId, EnderecoResponseDTO enderecoResponseDTO) {
+        enderecosLink(pessoaId, enderecoResponseDTO);
+        enderecoSelfLink(pessoaId, enderecoResponseDTO);
+        atualizarEnderecoLink(pessoaId, enderecoResponseDTO);
+        deletarEnderecoLink(pessoaId, enderecoResponseDTO);
+    }
+
+    private void enderecosLink(Long pessoaId, EnderecoResponseDTO enderecoResponseDTO) {
+        enderecoResponseDTO.add(linkTo(methodOn(EnderecoController.class)
+                .listarEnderecos(pessoaId)).withRel("lista de endereços"));
+    }
+
+    private void enderecoSelfLink(Long pessoaId, EnderecoResponseDTO enderecoResponseDTO) {
+        enderecoResponseDTO.add(linkTo(PessoaController.class)
+                .slash(pessoaId + "/enderecos/" + enderecoResponseDTO.getId()).withSelfRel());
+    }
+
+    private void deletarEnderecoLink(Long pessoaID, EnderecoResponseDTO enderecoResponseDTO) {
+        enderecoResponseDTO.add(linkTo(methodOn(EnderecoController.class)
+                .deletarEndereco(pessoaID, enderecoResponseDTO.getId())).withRel("deletar endereço"));
+    }
+
+    private void atualizarEnderecoLink(Long pessoaId, EnderecoResponseDTO enderecoResponseDTO) {
+        enderecoResponseDTO.add(linkTo(PessoaController.class)
+                .slash(pessoaId + "/enderecos/" + enderecoResponseDTO.getId()).withRel("atualizar endereço"));
     }
 }

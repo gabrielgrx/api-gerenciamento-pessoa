@@ -28,7 +28,7 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
 
         List<Problema.Campo> campos = new ArrayList<>();
 
-        for(ObjectError error : ex.getBindingResult().getAllErrors()) {
+        for (ObjectError error : ex.getBindingResult().getAllErrors()) {
             String nome = ((FieldError) error).getField();
             String mensagem = error.getDefaultMessage();
             Object parametro = ((FieldError) error).getRejectedValue();

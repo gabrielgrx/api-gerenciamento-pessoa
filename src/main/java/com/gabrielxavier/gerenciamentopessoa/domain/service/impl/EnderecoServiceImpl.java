@@ -2,7 +2,6 @@ package com.gabrielxavier.gerenciamentopessoa.domain.service.impl;
 
 import com.gabrielxavier.gerenciamentopessoa.api.dtos.EnderecoRequestDTO;
 import com.gabrielxavier.gerenciamentopessoa.api.dtos.EnderecoResponseDTO;
-import com.gabrielxavier.gerenciamentopessoa.api.dtos.PessoaRequestDTO;
 import com.gabrielxavier.gerenciamentopessoa.common.mapper.MapStructMapperImpl;
 import com.gabrielxavier.gerenciamentopessoa.domain.entity.Endereco;
 import com.gabrielxavier.gerenciamentopessoa.domain.entity.Pessoa;
@@ -48,7 +47,8 @@ public class EnderecoServiceImpl implements EnderecoService {
             List<Endereco> enderecos = pessoa.getEnderecos();
 
             for (Endereco enderecoBuscado : enderecos) {
-                if (enderecoBuscado.getTipoEndereco().equals(TipoEndereco.PRINCIPAL)) {
+                if (enderecoBuscado.getTipoEndereco().equals(TipoEndereco.PRINCIPAL)
+                        && enderecoRequestDTO.getTipoEndereco().equals(TipoEndereco.PRINCIPAL)) {
                     throw new NegocioException("Já existe um endereço principal cadastrado para essa pesoa");
                 }
             }
@@ -60,7 +60,7 @@ public class EnderecoServiceImpl implements EnderecoService {
             return mapStructMapper.enderecoToenderecoResponseDto(endereco);
 
         } catch (ConstraintViolationException e) {
-            throw new NegocioException("O CEP deve ser no formato 00000-000");
+            throw new NegocioException("O CEP deve ser no formato xxxxx-xxx");
         }
     }
 
@@ -100,11 +100,19 @@ public class EnderecoServiceImpl implements EnderecoService {
 
     @Transactional
     @Override
-    public EnderecoResponseDTO atualizarEndereco(Long pessoaid, Long enderecoId, EnderecoRequestDTO enderecoRequestDTO) {
-
-        findByIdPessoa(pessoaid);
+    public EnderecoResponseDTO atualizarEndereco(Long pessoaId, Long enderecoId, EnderecoRequestDTO enderecoRequestDTO) {
 
         Endereco enderecoParaAtualizar = findByIdEndereco(enderecoId);
+
+        if (enderecoRequestDTO.getTipoEndereco().equals(TipoEndereco.PRINCIPAL)) {
+            Pessoa pessoa = findByIdPessoa(pessoaId);
+            List<Endereco> enderecos = pessoa.getEnderecos();
+            enderecos.forEach(e -> {
+                if (e.getTipoEndereco().equals(TipoEndereco.PRINCIPAL)) {
+                    e.setTipoEndereco(TipoEndereco.SECUNDARIO);
+                }
+            });
+        }
 
         atualizarDadosEndereco(enderecoParaAtualizar, enderecoRequestDTO);
         enderecoRepository.save(enderecoParaAtualizar);
