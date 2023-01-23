@@ -20,6 +20,7 @@ API Restful com Spring Boot para gerenciamento do cadastro de pessoas com os seg
 - Spring Boot 3.0.1
 - Maven
 - H2 DataBase
+- Lombok
 - SwaggerUI (OpenAPI)
 - Postman
 - Json
