@@ -4,7 +4,6 @@ import com.gabrielxavier.gerenciamentopessoa.api.dtos.PessoaRequestDTO;
 import com.gabrielxavier.gerenciamentopessoa.api.dtos.PessoaResponseDTO;
 import com.gabrielxavier.gerenciamentopessoa.domain.entity.Endereco;
 import com.gabrielxavier.gerenciamentopessoa.domain.entity.enums.TipoEndereco;
-import com.gabrielxavier.gerenciamentopessoa.domain.repository.PessoaRepository;
 import com.gabrielxavier.gerenciamentopessoa.domain.service.impl.PessoaServiceImpl;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,9 +11,7 @@ import org.springframework.hateoas.CollectionModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import java.net.URI;
 import java.util.List;
 
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
@@ -27,18 +24,15 @@ public class PessoaController {
 
     @Autowired
     private PessoaServiceImpl pessoaService;
-    @Autowired
-    private PessoaRepository pessoaRepository;
 
     @PostMapping
     public ResponseEntity<PessoaResponseDTO> adicionarPessoa(@RequestBody @Valid PessoaRequestDTO pessoaRequestDTO) {
 
         PessoaResponseDTO pessoaResponseDTO = pessoaService.adicionarPessoa(pessoaRequestDTO);
-        URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(pessoaResponseDTO.getId()).toUri();
 
         todosLinks(pessoaResponseDTO);
 
-        return ResponseEntity.created(uri).body(pessoaResponseDTO);
+        return ResponseEntity.status(HttpStatus.CREATED).body(pessoaResponseDTO);
     }
 
     @GetMapping

@@ -1,20 +1,12 @@
 package com.gabrielxavier.gerenciamentopessoa.common.mapper;
 
-import com.gabrielxavier.gerenciamentopessoa.api.controller.EnderecoController;
-import com.gabrielxavier.gerenciamentopessoa.api.controller.PessoaController;
 import com.gabrielxavier.gerenciamentopessoa.api.dtos.EnderecoRequestDTO;
 import com.gabrielxavier.gerenciamentopessoa.api.dtos.EnderecoResponseDTO;
 import com.gabrielxavier.gerenciamentopessoa.api.dtos.PessoaRequestDTO;
 import com.gabrielxavier.gerenciamentopessoa.api.dtos.PessoaResponseDTO;
 import com.gabrielxavier.gerenciamentopessoa.domain.entity.Endereco;
 import com.gabrielxavier.gerenciamentopessoa.domain.entity.Pessoa;
-import com.gabrielxavier.gerenciamentopessoa.domain.entity.enums.TipoEndereco;
 import org.springframework.stereotype.Component;
-
-import java.util.List;
-
-import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
-import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 @Component
 public class MapStructMapperImpl implements MapStructMapper {
@@ -79,14 +71,6 @@ public class MapStructMapperImpl implements MapStructMapper {
         enderecoResponseDTO.setNumero(endereco.getNumero());
         enderecoResponseDTO.setCidade(endereco.getCidade());
         enderecoResponseDTO.setTipoEndereco(endereco.getTipoEndereco());
-//
-//        enderecoResponseDTO.add(linkTo(methodOn(EnderecoController.class)
-//                .listarEnderecos(endereco.getPessoa().getId()))
-//                .withRel("lista de endereços"));
-//
-//        enderecoResponseDTO.add(linkTo(methodOn(EnderecoController.class)
-//                .deletarEndereco(endereco.getPessoa().getId(), endereco.getId()))
-//                .withRel("deletar endereço"));
 
         return enderecoResponseDTO;
     }

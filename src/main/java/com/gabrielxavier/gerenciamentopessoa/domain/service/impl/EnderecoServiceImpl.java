@@ -49,7 +49,7 @@ public class EnderecoServiceImpl implements EnderecoService {
             for (Endereco enderecoBuscado : enderecos) {
                 if (enderecoBuscado.getTipoEndereco().equals(TipoEndereco.PRINCIPAL)
                         && enderecoRequestDTO.getTipoEndereco().equals(TipoEndereco.PRINCIPAL)) {
-                    throw new NegocioException("Já existe um endereço principal cadastrado para essa pesoa");
+                    throw new NegocioException("Já existe um endereço principal cadastrado para essa pessoa");
                 }
             }
 

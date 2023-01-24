@@ -60,6 +60,10 @@ public class PessoaServiceImpl implements PessoaService {
 
         Pessoa pessoaParaAtualizar = findByIdPessoa(id);
 
+        if (nomeExiste(pessoaRequestDTO) && !pessoaRequestDTO.getNome().equals(pessoaParaAtualizar.getNome())) {
+            throw new NegocioException("Já existe uma pessoa cadastrada com este nome.");
+        }
+
         atualizarDados(pessoaParaAtualizar, pessoaRequestDTO);
         pessoaRepository.save(pessoaParaAtualizar);
 
@@ -89,5 +93,4 @@ public class PessoaServiceImpl implements PessoaService {
         return pessoaRepository.findById(id)
                 .orElseThrow(() -> new PessoaNaoEncontradaException("Pessoa não encontrada"));
     }
-
 }
