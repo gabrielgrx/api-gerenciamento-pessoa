@@ -16,7 +16,7 @@ API Restful com Spring Boot para gerenciamento do cadastro de pessoas com os seg
 
 # Tecnologias utilizadas
 - IntelliJ IDEA
-- Java 17
+- Java 11
 - Spring Boot 3.0.1
 - Maven
 - H2 DataBase
