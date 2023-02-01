@@ -1,7 +1,7 @@
 package com.gabrielxavier.gerenciamentopessoa.domain.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.gabrielxavier.gerenciamentopessoa.domain.entity.enums.TipoEndereco;
+import com.gabrielxavier.gerenciamentopessoa.domain.entity.enumclass.TipoEndereco;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Pattern;
 import lombok.*;

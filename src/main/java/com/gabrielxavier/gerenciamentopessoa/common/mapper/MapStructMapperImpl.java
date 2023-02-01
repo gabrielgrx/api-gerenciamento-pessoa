@@ -1,9 +1,9 @@
 package com.gabrielxavier.gerenciamentopessoa.common.mapper;
 
-import com.gabrielxavier.gerenciamentopessoa.api.dtos.EnderecoRequestDTO;
-import com.gabrielxavier.gerenciamentopessoa.api.dtos.EnderecoResponseDTO;
-import com.gabrielxavier.gerenciamentopessoa.api.dtos.PessoaRequestDTO;
-import com.gabrielxavier.gerenciamentopessoa.api.dtos.PessoaResponseDTO;
+import com.gabrielxavier.gerenciamentopessoa.api.dto.EnderecoRequestDTO;
+import com.gabrielxavier.gerenciamentopessoa.api.dto.EnderecoResponseDTO;
+import com.gabrielxavier.gerenciamentopessoa.api.dto.PessoaRequestDTO;
+import com.gabrielxavier.gerenciamentopessoa.api.dto.PessoaResponseDTO;
 import com.gabrielxavier.gerenciamentopessoa.domain.entity.Endereco;
 import com.gabrielxavier.gerenciamentopessoa.domain.entity.Pessoa;
 import org.springframework.stereotype.Component;
@@ -19,7 +19,7 @@ public class MapStructMapperImpl implements MapStructMapper {
 
         Pessoa pessoa = new Pessoa();
 
-        pessoa.setNome(pessoaRequestDTO.getNome());
+        pessoa.setNomeCompleto(pessoaRequestDTO.getNomeCompleto());
         pessoa.setDataNascimento(pessoaRequestDTO.getDataNascimento());
 
         return pessoa;
@@ -34,7 +34,7 @@ public class MapStructMapperImpl implements MapStructMapper {
         PessoaResponseDTO pessoaResponseDTO = new PessoaResponseDTO();
 
         pessoaResponseDTO.setId(pessoa.getId());
-        pessoaResponseDTO.setNome(pessoa.getNome());
+        pessoaResponseDTO.setNomeCompleto(pessoa.getNomeCompleto());
         pessoaResponseDTO.setDataNascimento(pessoa.getDataNascimento());
 
         return pessoaResponseDTO;

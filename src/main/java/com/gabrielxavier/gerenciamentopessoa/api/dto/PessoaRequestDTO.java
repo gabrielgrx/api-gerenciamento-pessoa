@@ -1,4 +1,4 @@
-package com.gabrielxavier.gerenciamentopessoa.api.dtos;
+package com.gabrielxavier.gerenciamentopessoa.api.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -15,7 +15,7 @@ public class PessoaRequestDTO {
 
     @NotBlank(message = "Você deve informar um nome")
     @Schema(description = "Nome da Pessoa", example = "Kleber Silva")
-    private String nome;
+    private String nomeCompleto;
 
     @NotNull(message = "Você deve informar uma data de nascimento no formato yyyy-MM-dd")
     @JsonFormat(pattern = "yyyy-MM-dd")

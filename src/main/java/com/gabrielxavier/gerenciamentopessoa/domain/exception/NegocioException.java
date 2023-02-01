@@ -1,4 +1,4 @@
-package com.gabrielxavier.gerenciamentopessoa.domain.exceptions;
+package com.gabrielxavier.gerenciamentopessoa.domain.exception;
 
 public class NegocioException extends RuntimeException {
 

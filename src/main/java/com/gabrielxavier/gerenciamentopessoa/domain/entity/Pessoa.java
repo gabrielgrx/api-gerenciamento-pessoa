@@ -27,9 +27,9 @@ public class Pessoa implements Serializable {
     @Setter(AccessLevel.NONE)
     private Long id;
 
-    @Column(name = "nome")
-    @Size(max = 60)
-    private String nome;
+    @Column(name = "nome completo", nullable = false)
+    @Size(min = 2, max = 60)
+    private String nomeCompleto;
 
     @Column(name = "Data de nascimento", nullable = false)
     @DateTimeFormat(pattern = "yyyy-MM-dd")

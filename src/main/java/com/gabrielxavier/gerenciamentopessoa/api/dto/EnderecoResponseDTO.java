@@ -1,6 +1,6 @@
-package com.gabrielxavier.gerenciamentopessoa.api.dtos;
+package com.gabrielxavier.gerenciamentopessoa.api.dto;
 
-import com.gabrielxavier.gerenciamentopessoa.domain.entity.enums.TipoEndereco;
+import com.gabrielxavier.gerenciamentopessoa.domain.entity.enumclass.TipoEndereco;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.hateoas.RepresentationModel;

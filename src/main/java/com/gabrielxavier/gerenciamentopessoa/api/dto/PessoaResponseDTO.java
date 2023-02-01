@@ -1,4 +1,4 @@
-package com.gabrielxavier.gerenciamentopessoa.api.dtos;
+package com.gabrielxavier.gerenciamentopessoa.api.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.gabrielxavier.gerenciamentopessoa.domain.entity.Endereco;
@@ -18,7 +18,7 @@ public class PessoaResponseDTO extends RepresentationModel<PessoaResponseDTO> {
 
     private Long id;
 
-    private String nome;
+    private String nomeCompleto;
 
     private LocalDate dataNascimento;
 

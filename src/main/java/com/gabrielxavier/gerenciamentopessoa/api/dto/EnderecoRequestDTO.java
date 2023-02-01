@@ -1,6 +1,6 @@
-package com.gabrielxavier.gerenciamentopessoa.api.dtos;
+package com.gabrielxavier.gerenciamentopessoa.api.dto;
 
-import com.gabrielxavier.gerenciamentopessoa.domain.entity.enums.TipoEndereco;
+import com.gabrielxavier.gerenciamentopessoa.domain.entity.enumclass.TipoEndereco;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;

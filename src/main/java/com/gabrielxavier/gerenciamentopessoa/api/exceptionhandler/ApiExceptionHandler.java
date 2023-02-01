@@ -1,8 +1,8 @@
 package com.gabrielxavier.gerenciamentopessoa.api.exceptionhandler;
 
-import com.gabrielxavier.gerenciamentopessoa.domain.exceptions.EnderecoNaoEncontradoException;
-import com.gabrielxavier.gerenciamentopessoa.domain.exceptions.NegocioException;
-import com.gabrielxavier.gerenciamentopessoa.domain.exceptions.PessoaNaoEncontradaException;
+import com.gabrielxavier.gerenciamentopessoa.domain.exception.EnderecoNaoEncontradoException;
+import com.gabrielxavier.gerenciamentopessoa.domain.exception.NegocioException;
+import com.gabrielxavier.gerenciamentopessoa.domain.exception.PessoaNaoEncontradaException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;

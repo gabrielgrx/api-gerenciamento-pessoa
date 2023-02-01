@@ -6,4 +6,9 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface EnderecoRepository extends JpaRepository<Endereco, Long> {
+
+    boolean existsByLogradouro(String logradouro);
+
+    boolean existsByNumero(String numero);
+
 }
