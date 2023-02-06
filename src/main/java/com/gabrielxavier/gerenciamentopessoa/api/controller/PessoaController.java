@@ -2,7 +2,6 @@ package com.gabrielxavier.gerenciamentopessoa.api.controller;
 
 import com.gabrielxavier.gerenciamentopessoa.api.dto.PessoaRequestDTO;
 import com.gabrielxavier.gerenciamentopessoa.api.dto.PessoaResponseDTO;
-import com.gabrielxavier.gerenciamentopessoa.api.hateoas.EnderecoEndPoints;
 import com.gabrielxavier.gerenciamentopessoa.api.hateoas.PessoaEndPoints;
 import com.gabrielxavier.gerenciamentopessoa.domain.service.PessoaService;
 import jakarta.validation.Valid;

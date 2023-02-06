@@ -26,7 +26,6 @@ public class PessoaService {
 
     @Transactional
     public PessoaResponseDTO adicionarPessoa(PessoaRequestDTO pessoaRequestDTO) {
-
         if (pessoaRepository.existsByNomeCompleto(pessoaRequestDTO.getNomeCompleto())) {
             throw new NegocioException("Já existe uma pessoa cadastrada com este nome.");
         }
@@ -34,6 +33,7 @@ public class PessoaService {
         Pessoa pessoa = mapStructMapper.pessoaRequestDtoToPessoa(pessoaRequestDTO);
 
         pessoaRepository.save(pessoa);
+
         return mapStructMapper.pessoaToPessoaResponseDto(pessoa);
     }
 
@@ -54,10 +54,8 @@ public class PessoaService {
 
     @Transactional
     public PessoaResponseDTO atualizarPessoa(Long id, PessoaRequestDTO pessoaRequestDTO) {
-
         Pessoa pessoaParaAtualizar = pessoaRepository.findById(id)
                 .orElseThrow(() -> new PessoaNaoEncontradaException("Pessoa não encontrada"));
-        ;
 
         if (pessoaRepository.existsByNomeCompleto(pessoaRequestDTO.getNomeCompleto()) && !pessoaRequestDTO.getNomeCompleto().equals(pessoaParaAtualizar.getNomeCompleto())) {
             throw new NegocioException("Já existe uma pessoa cadastrada com este nome.");
@@ -79,7 +77,7 @@ public class PessoaService {
     public void deletarPessoaPorId(Long id) {
         pessoaRepository.findById(id)
                 .orElseThrow(() -> new PessoaNaoEncontradaException("Pessoa não encontrada"));
-        ;
+
         pessoaRepository.deleteById(id);
     }
 }
