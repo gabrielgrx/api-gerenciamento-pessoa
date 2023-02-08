@@ -24,6 +24,7 @@ API Restful com Spring Boot para gerenciamento do cadastro de pessoas com os seg
 - SwaggerUI (OpenAPI)
 - Postman
 - Mockito
+- JUnit5
 - Json
 
 # API REST
