@@ -58,7 +58,7 @@ public class PessoaService {
                 .orElseThrow(() -> new PessoaNaoEncontradaException("Pessoa não encontrada"));
 
         if (pessoaRepository.existsByNomeCompleto(pessoaRequestDTO.getNomeCompleto()) && !pessoaRequestDTO.getNomeCompleto().equals(pessoaParaAtualizar.getNomeCompleto())) {
-            throw new NegocioException("Já existe uma pessoa cadastrada com este nome.");
+            throw new NegocioException("Já existe uma pessoa cadastrada com este nome");
         }
 
         if (pessoaRequestDTO.getNomeCompleto() == null || pessoaRequestDTO.getDataNascimento() == null) {

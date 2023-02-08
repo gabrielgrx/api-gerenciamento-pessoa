@@ -15,11 +15,23 @@ public abstract class PessoaCreator {
         return pessoaRequestDTO;
     }
 
+    public static PessoaRequestDTO criarPessoaRequestDtoCamposNulos() {
+        return new PessoaRequestDTO();
+    }
+
     public static PessoaRequestDTO atualizarPessoaRequestDto1() {
         PessoaRequestDTO pessoaRequestDTO = new PessoaRequestDTO();
-        pessoaRequestDTO.setNomeCompleto("Fulano ");
+        pessoaRequestDTO.setNomeCompleto("Fulano atualizado");
         pessoaRequestDTO.setDataNascimento(LocalDate.parse("2000-11-21"));
         return pessoaRequestDTO;
+    }
+
+    public static PessoaResponseDTO atualizarPessoaResponseDTO1() {
+        PessoaResponseDTO pessoaResponseDTO = new PessoaResponseDTO();
+        pessoaResponseDTO.setId(1L);
+        pessoaResponseDTO.setNomeCompleto("Fulano atualizado");
+        pessoaResponseDTO.setDataNascimento(LocalDate.parse("2000-11-21"));
+        return pessoaResponseDTO;
     }
 
     public static PessoaResponseDTO criarPessoaResponseDto1() {

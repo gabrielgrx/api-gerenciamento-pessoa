@@ -1,8 +1,10 @@
 package com.gabrielxavier.gerenciamentopessoa.service;
 
+import com.gabrielxavier.gerenciamentopessoa.api.dto.PessoaRequestDTO;
 import com.gabrielxavier.gerenciamentopessoa.api.dto.PessoaResponseDTO;
 import com.gabrielxavier.gerenciamentopessoa.common.mapper.MapStructMapperImpl;
 import com.gabrielxavier.gerenciamentopessoa.domain.entity.Pessoa;
+import com.gabrielxavier.gerenciamentopessoa.domain.exception.NegocioException;
 import com.gabrielxavier.gerenciamentopessoa.domain.exception.PessoaNaoEncontradaException;
 import com.gabrielxavier.gerenciamentopessoa.domain.repository.PessoaRepository;
 import com.gabrielxavier.gerenciamentopessoa.domain.service.PessoaService;
@@ -23,8 +25,8 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
+import static org.assertj.core.api.Assertions.*;
+import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(SpringExtension.class)
@@ -38,6 +40,9 @@ public class PessoaServiceTest {
 
     @Mock
     private MapStructMapperImpl mapStructMapper;
+
+    @Mock
+    Pessoa pessoa;
 
     public List<Pessoa> pessoaList;
 
@@ -59,6 +64,8 @@ public class PessoaServiceTest {
 
         when(mapStructMapper.pessoaRequestDtoToPessoa(PessoaCreator.criarPessoaRequestDto1()))
                 .thenReturn(PessoaCreator.criarPessoa1());
+
+        doNothing().when(pessoaRepository).deleteById(ArgumentMatchers.anyLong());
     }
 
     @Test
@@ -111,11 +118,78 @@ public class PessoaServiceTest {
     @DisplayName("adicionarPessoa retorna PessoaResponseDTO quando sucesso")
     void adicionarPessoa_RetornaPessoaResponseDTO_QuandoSucesso() {
 
-        PessoaResponseDTO pessoaResponseDTO = pessoaService.adicionarPessoa(PessoaCreator.criarPessoaRequestDto1());
+        when(pessoaService.adicionarPessoa(PessoaCreator.criarPessoaRequestDto1()))
+                .thenReturn(PessoaCreator.criarPessoaResponseDto1());
 
-        assertThat(pessoaResponseDTO).isNotNull();
+        assertThat(PessoaCreator.criarPessoaResponseDto1()).isNotNull();
+    }
 
-        System.out.println(pessoaResponseDTO.getNomeCompleto());
-        System.out.println(pessoaResponseDTO.getId());
+    @Test
+    @DisplayName("adicionarPessoa retorna NegocioException quando pessoa já existe")
+    void adicionarPessoa_RetornaNegocioException_QuandoPessoaJaExiste() {
+
+        when(pessoaRepository.existsByNomeCompleto(PessoaCreator.criarPessoa1().getNomeCompleto()))
+                .thenReturn(true);
+
+        assertThatExceptionOfType(NegocioException.class)
+                .isThrownBy(() -> pessoaService.adicionarPessoa(PessoaCreator.criarPessoaRequestDto1()))
+                .withMessage("Já existe uma pessoa cadastrada com este nome.");
+    }
+
+    @Test
+    @DisplayName("atualizarPessoa retorna PessoaResponseDTO atualizada quando sucesso")
+    void atualizarPessoa_RetornaPessoaResponseDTOAtualizada_QuandoSucesso() {
+
+        Long idExperado = 1L;
+        String nomeCompletoEsperado = PessoaCreator.atualizarPessoaRequestDto1().getNomeCompleto();
+        LocalDate dataAniversarioEsperada = PessoaCreator.atualizarPessoaRequestDto1().getDataNascimento();
+
+        when(pessoaRepository.findById(PessoaCreator.criarPessoaResponseDto1().getId()))
+                .thenReturn(Optional.of(PessoaCreator.criarPessoa1()));
+
+        when(mapStructMapper.pessoaToPessoaResponseDto(PessoaCreator.criarPessoa1()))
+                .thenReturn(PessoaCreator.atualizarPessoaResponseDTO1());
+
+        PessoaResponseDTO pessoaResponseDTO = pessoaService.atualizarPessoa(PessoaCreator.criarPessoa1().getId(), PessoaCreator.atualizarPessoaRequestDto1());
+
+        assertThat(pessoaResponseDTO)
+                .isNotNull();
+        assertThat(pessoaResponseDTO.getId()).isEqualTo(idExperado);
+        assertThat(pessoaResponseDTO.getNomeCompleto()).isEqualTo(nomeCompletoEsperado);
+        assertThat(pessoaResponseDTO.getDataNascimento()).isEqualTo(dataAniversarioEsperada);
+    }
+
+    @Test
+    @DisplayName("atualizarPessoa retorna NegocioException quando pessoa com nome completo já existe")
+    void atualizarPessoa_RetornaNegocioException_QuandoPessoaComNomeCompletoJaExiste() {
+
+        when(pessoaRepository.existsByNomeCompleto(PessoaCreator.criarPessoa1().getNomeCompleto()))
+                .thenReturn(true);
+
+        PessoaRequestDTO pessoaRequestDTO = PessoaCreator.criarPessoaRequestDto1();
+        Pessoa pessoaParaAtualizar = PessoaCreator.criarPessoa1();
+//        pessoaParaAtualizar.setId(pessoa.get().getId());
+//        pessoaParaAtualizar.setNomeCompleto(pessoa.get().getNomeCompleto());
+//        pessoaParaAtualizar.setDataNascimento(pessoa.get().getDataNascimento());
+
+        assertThatExceptionOfType(NegocioException.class)
+                .isThrownBy(() -> pessoaService.atualizarPessoa(PessoaCreator.criarPessoa1().getId(), PessoaCreator.criarPessoaRequestDto1()))
+                .withMessage("Já existe uma pessoa cadastrada com este nome");
+    }
+
+    @Test
+    @DisplayName("atualizarPessoa retorna NegocioException quando os campos inseridos sao nulos")
+    void atualizarPessoa_RetornaNegocioException_QuandoOsCamposInseridosSaoNulos() {
+
+        assertThatExceptionOfType(NegocioException.class)
+                .isThrownBy(() -> pessoaService.atualizarPessoa(PessoaCreator.criarPessoa1().getId(), PessoaCreator.criarPessoaRequestDtoCamposNulos()))
+                .withMessage("Os campos não podem ser nulos");
+    }
+
+    @Test
+    @DisplayName("deletarPessoaPorId retorna vazio quando sucesso")
+    void deletarPessoaPorId_RetornaVazio_QuandoSucesso() {
+
+        assertThatCode(() -> pessoaService.deletarPessoaPorId(1L)).doesNotThrowAnyException();
     }
 }
