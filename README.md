@@ -23,6 +23,7 @@ API Restful com Spring Boot para gerenciamento do cadastro de pessoas com os seg
 - Lombok
 - SwaggerUI (OpenAPI)
 - Postman
+- Mockito
 - Json
 
 # API REST
