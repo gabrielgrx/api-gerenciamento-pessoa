@@ -26,6 +26,7 @@ public class PessoaService {
 
     @Transactional
     public PessoaResponseDTO adicionarPessoa(PessoaRequestDTO pessoaRequestDTO) {
+
         if (pessoaRepository.existsByNomeCompleto(pessoaRequestDTO.getNomeCompleto())) {
             throw new NegocioException("Já existe uma pessoa cadastrada com este nome.");
         }
@@ -39,13 +40,16 @@ public class PessoaService {
 
     @Transactional
     public CollectionModel<PessoaResponseDTO> listarPessoas() {
+
         List<Pessoa> pessoas = pessoaRepository.findAll();
+
         return CollectionModel.of(pessoas.stream()
                 .map(p -> mapStructMapper.pessoaToPessoaResponseDto(p)).collect(Collectors.toList()));
     }
 
     @Transactional
     public PessoaResponseDTO buscarPorId(Long id) {
+
         Pessoa pessoa = pessoaRepository.findById(id)
                 .orElseThrow(() -> new PessoaNaoEncontradaException("Pessoa não encontrada"));
 
@@ -54,6 +58,7 @@ public class PessoaService {
 
     @Transactional
     public PessoaResponseDTO atualizarPessoa(Long id, PessoaRequestDTO pessoaRequestDTO) {
+
         Pessoa pessoaParaAtualizar = pessoaRepository.findById(id)
                 .orElseThrow(() -> new PessoaNaoEncontradaException("Pessoa não encontrada"));
 
@@ -75,6 +80,7 @@ public class PessoaService {
 
     @Transactional
     public void deletarPessoaPorId(Long id) {
+
         pessoaRepository.findById(id)
                 .orElseThrow(() -> new PessoaNaoEncontradaException("Pessoa não encontrada"));
 

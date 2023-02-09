@@ -9,7 +9,6 @@ import com.gabrielxavier.gerenciamentopessoa.domain.exception.PessoaNaoEncontrad
 import com.gabrielxavier.gerenciamentopessoa.domain.repository.PessoaRepository;
 import com.gabrielxavier.gerenciamentopessoa.domain.service.PessoaService;
 import com.gabrielxavier.gerenciamentopessoa.util.PessoaCreator;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -40,9 +39,6 @@ public class PessoaServiceTest {
 
     @Mock
     private MapStructMapperImpl mapStructMapper;
-
-    @Mock
-    Pessoa pessoa;
 
     public List<Pessoa> pessoaList;
 
@@ -102,6 +98,7 @@ public class PessoaServiceTest {
         assertThat(pessoaResponseDTO).isNotNull();
         assertThat(pessoaResponseDTO.getNomeCompleto()).isEqualTo(PessoaCreator.criarPessoaResponseDto1().getNomeCompleto());
         assertThat(pessoaResponseDTO.getId()).isEqualTo(idEsperado);
+        assertThat(pessoaResponseDTO.getEnderecos()).isEqualTo(null);
     }
 
     @Test
@@ -117,6 +114,8 @@ public class PessoaServiceTest {
     @Test
     @DisplayName("adicionarPessoa retorna PessoaResponseDTO quando sucesso")
     void adicionarPessoa_RetornaPessoaResponseDTO_QuandoSucesso() {
+
+        PessoaRequestDTO pessoaRequestDTO = PessoaCreator.criarPessoaRequestDto1();
 
         when(pessoaService.adicionarPessoa(PessoaCreator.criarPessoaRequestDto1()))
                 .thenReturn(PessoaCreator.criarPessoaResponseDto1());
@@ -163,17 +162,17 @@ public class PessoaServiceTest {
     @DisplayName("atualizarPessoa retorna NegocioException quando pessoa com nome completo já existe")
     void atualizarPessoa_RetornaNegocioException_QuandoPessoaComNomeCompletoJaExiste() {
 
-        when(pessoaRepository.existsByNomeCompleto(PessoaCreator.criarPessoa1().getNomeCompleto()))
+        PessoaRequestDTO pessoaRequestDTO = PessoaCreator.criarPessoaRequestDto1();
+
+        Pessoa pessoa = PessoaCreator.criarPessoa2();
+
+        when(pessoaRepository.existsByNomeCompleto(pessoaRequestDTO.getNomeCompleto()))
                 .thenReturn(true);
 
-        PessoaRequestDTO pessoaRequestDTO = PessoaCreator.criarPessoaRequestDto1();
-        Pessoa pessoaParaAtualizar = PessoaCreator.criarPessoa1();
-//        pessoaParaAtualizar.setId(pessoa.get().getId());
-//        pessoaParaAtualizar.setNomeCompleto(pessoa.get().getNomeCompleto());
-//        pessoaParaAtualizar.setDataNascimento(pessoa.get().getDataNascimento());
+        when(pessoaRepository.findById(pessoa.getId())).thenReturn(Optional.of(pessoa));
 
         assertThatExceptionOfType(NegocioException.class)
-                .isThrownBy(() -> pessoaService.atualizarPessoa(PessoaCreator.criarPessoa1().getId(), PessoaCreator.criarPessoaRequestDto1()))
+                .isThrownBy(() -> pessoaService.atualizarPessoa(pessoa.getId(), pessoaRequestDTO))
                 .withMessage("Já existe uma pessoa cadastrada com este nome");
     }
 
