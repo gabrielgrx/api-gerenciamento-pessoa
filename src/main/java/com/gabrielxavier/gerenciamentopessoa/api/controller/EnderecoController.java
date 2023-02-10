@@ -26,11 +26,10 @@ public class EnderecoController {
                                                                  @RequestBody @Valid EnderecoRequestDTO enderecoRequestDTO) {
 
         EnderecoResponseDTO enderecoResponseDTO = enderecoService.adicionarEndereco(pessoaId, enderecoRequestDTO);
-        URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(enderecoResponseDTO.getId()).toUri();
 
         EnderecoEndPoints.todosLinks(pessoaId, enderecoResponseDTO);
 
-        return ResponseEntity.created(uri).body(enderecoResponseDTO);
+        return ResponseEntity.status(HttpStatus.CREATED).body(enderecoResponseDTO);
     }
 
     @GetMapping("/enderecos")
