@@ -2,18 +2,15 @@ package com.gabrielxavier.gerenciamentopessoa.service;
 
 import com.gabrielxavier.gerenciamentopessoa.api.dto.EnderecoRequestDTO;
 import com.gabrielxavier.gerenciamentopessoa.api.dto.EnderecoResponseDTO;
-import com.gabrielxavier.gerenciamentopessoa.api.dto.PessoaResponseDTO;
 import com.gabrielxavier.gerenciamentopessoa.common.mapper.MapStructMapperImpl;
 import com.gabrielxavier.gerenciamentopessoa.domain.entity.Endereco;
 import com.gabrielxavier.gerenciamentopessoa.domain.entity.Pessoa;
 import com.gabrielxavier.gerenciamentopessoa.domain.entity.enumclass.TipoEndereco;
 import com.gabrielxavier.gerenciamentopessoa.domain.exception.EnderecoNaoEncontradoException;
 import com.gabrielxavier.gerenciamentopessoa.domain.exception.NegocioException;
-import com.gabrielxavier.gerenciamentopessoa.domain.exception.PessoaNaoEncontradaException;
 import com.gabrielxavier.gerenciamentopessoa.domain.repository.EnderecoRepository;
 import com.gabrielxavier.gerenciamentopessoa.domain.repository.PessoaRepository;
 import com.gabrielxavier.gerenciamentopessoa.domain.service.EnderecoService;
-import com.gabrielxavier.gerenciamentopessoa.domain.service.PessoaService;
 import com.gabrielxavier.gerenciamentopessoa.util.EnderecoCreator;
 import com.gabrielxavier.gerenciamentopessoa.util.PessoaCreator;
 import jakarta.validation.ConstraintViolationException;
@@ -27,14 +24,13 @@ import org.mockito.Mock;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-import java.time.LocalDate;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.*;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.when;
 
 @ExtendWith(SpringExtension.class)
 public class EnderecoServiceTest {
